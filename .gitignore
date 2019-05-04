@@ -1,0 +1,7 @@
+dist/
+node_modules/
+logs/
+coverage/
+docs/
+.DS_Store
+.Spotlight-*

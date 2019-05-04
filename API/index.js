@@ -1,0 +1,1 @@
+export * as greeting from './greeting.js';

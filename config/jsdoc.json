@@ -1,0 +1,9 @@
+{
+    "templates": {
+        "outputSourceFiles": false,
+        "outputSourcePath": false
+    },
+    "docdash": {
+        "typedefs": true
+    }
+}
