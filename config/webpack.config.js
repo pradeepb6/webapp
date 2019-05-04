@@ -33,6 +33,15 @@ const config = {
         host: '0.0.0.0',
         port: 8443,
         https: true,
+        // https: {
+        //     cert: fs.readFileSync(SSL_CERT),
+        //     ca: fs.readFileSync(SSL_CA),
+        //     key: fs.readFileSync(SSL_KEY),
+        // },
+        disableHostCheck: true,
+        quiet: true,
+        clientLogLevel: 'error',
+        writeToDisk: true,
     },
     resolve: {
         alias: {
