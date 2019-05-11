@@ -2,7 +2,7 @@ import pkg from '../package.json';
 import path from 'path';
 import webpack from 'webpack';
 import CleanPlugin from 'clean-webpack-plugin';
-import Html5Plugin from '../../html5-webpack-plugin';
+import Html5Plugin from 'html5-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
@@ -40,7 +40,7 @@ const config = {
         // },
         disableHostCheck: true,
         quiet: true,
-        clientLogLevel: 'error',
+        clientLogLevel: 'warning',
         writeToDisk: true,
     },
     resolve: {
