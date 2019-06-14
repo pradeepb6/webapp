@@ -1,14 +1,15 @@
 import pkg from '../package.json';
+import fs from 'fs';
 import path from 'path';
 import webpack from 'webpack';
-import CleanPlugin from 'clean-webpack-plugin';
+import { CleanWebpackPlugin as CleanPlugin } from 'clean-webpack-plugin';
 import Html5Plugin from 'html5-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import NotifierPlugin from 'webpack-notifier';
 
-const { HTML, JS, FAVICON, SPLASH, SPLASH_BACKGROUND } = process.env;
+const { SSL_CERT, SSL_CA, SSL_KEY, HTML, JS, FAVICON, SPLASH, SPLASH_BACKGROUND } = process.env;
 
 const config = {
     profile: true,
@@ -32,12 +33,11 @@ const config = {
         open: true,
         host: '0.0.0.0',
         port: 8443,
-        https: true,
-        // https: {
-        //     cert: fs.readFileSync(SSL_CERT),
-        //     ca: fs.readFileSync(SSL_CA),
-        //     key: fs.readFileSync(SSL_KEY),
-        // },
+        https: {
+            cert: fs.readFileSync(SSL_CERT),
+            ca: fs.readFileSync(SSL_CA),
+            key: fs.readFileSync(SSL_KEY),
+        },
         disableHostCheck: true,
         quiet: true,
         clientLogLevel: 'warning',

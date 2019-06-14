@@ -1,35 +1,16 @@
-import fontRegular from '../node_modules/typeface-montserrat/files/montserrat-latin-400.woff2';
-import fontBold from '../node_modules/typeface-montserrat/files/montserrat-latin-600.woff2';
+import font from '../node_modules/typeface-montserrat/files/montserrat-latin-400.woff2';
+import reset from 'jss-reset';
 
 export const globals = {
+    ...reset,
     '@global html, body': {
         fontFamily: 'Montserrat',
-        width: '100vw',
-        height: '100vh',
-        overflow: 'hidden', //disable elastic scroll
-    },
-    // elements which do not inherit font by default from body
-    '@global input, select, textarea, button': {
-        fontFamily: 'inherit',
-    },
-    // sticky footer
-    '@global #app': {
-        height: '100%',
-        display: 'grid',
-        gridTemplateRows: 'auto 1fr auto',
-        overflow: 'auto', //disable elastic scroll
-        overflowScrolling: 'touch', //but keep smooth scroll
     },
     '@font-face': [{
         fontFamily: 'Montserrat',
         fontWeight: 'normal',
         fontStyle: 'normal',
-        src: `url(${fontRegular}) format('woff2')`,
-    }, {
-        fontFamily: 'Montserrat',
-        fontWeight: 'bold',
-        fontStyle: 'normal',
-        src: `url(${fontBold}) format('woff2')`,
+        src: `url(${font}) format('woff2')`,
     }],
 };
 

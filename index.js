@@ -56,7 +56,7 @@ router.all(`/api/:service/:action`, async ctx => {
 
 const setHeaders = res => res.setHeader('Cache-Control', 'must-revalidate, max-age=' + 3600 * 24 * 7);
 
-router.all(['*.js', '*.css', '*.map', '*.woff2', '*.jpg', '*.jpeg', '*.png', '*.gif', '*.svg', '*.txt', '*.json'], async ctx => await send(ctx, ctx.path, { root: path.resolve(__dirname, 'dist'), setHeaders }));
+router.all(['*.js', '*.json', '*.map', '*.woff2', '*.jpg', '*.jpeg', '*.png', '*.gif', '*.svg', '*.txt', '*.xml'], async ctx => await send(ctx, ctx.path, { root: path.resolve(__dirname, 'dist'), setHeaders }));
 
 router.all(['/', '/*'], async ctx => await send(ctx, `./index.html`, { root: path.resolve(__dirname, 'dist'), setHeaders }));
 
@@ -66,8 +66,8 @@ const cert = fs.readFileSync(SSL_CERT);
 const ca = fs.readFileSync(SSL_CA);
 const key = fs.readFileSync(SSL_KEY);
 
-const httpServer = http1.createServer(app.callback()).listen(HTTP, error => error ? console.error(error) : console.info(`http1 serving on port ${HTTP}`));
-const httpsServer = http2.createSecureServer({ cert, ca, key, allowHTTP1: true }, app.callback()).listen(HTTPS, error => error ? console.error(error) : console.info(`http2s serving on port ${HTTPS}`));
+const httpServer = http1.createServer(app.callback()).listen(HTTP, error => error ? console.error(error) : console.info(`http serving on port ${HTTP}`));
+const httpsServer = http2.createSecureServer({ cert, ca, key, allowHTTP1: true }, app.callback()).listen(HTTPS, error => error ? console.error(error) : console.info(`https serving on port ${HTTPS}`));
 
 httpServer.setTimeout(60 * 1000); //1min timeout
 httpServer.on('error', console.error);
