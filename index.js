@@ -1,3 +1,4 @@
+import { version } from './package.json';
 import path from 'path';
 import fs from 'fs';
 import http1 from 'http';
@@ -7,8 +8,8 @@ import sslify from 'koa-sslify';
 import cors from 'kcors';
 import compress from 'koa-compress';
 import noTrailingSlash from 'koa-no-trailing-slash';
-import json from 'koa-json';
 import body from 'koa-body';
+import json from 'koa-json';
 import send from 'koa-send';
 import Router from 'koa-router';
 
@@ -27,11 +28,13 @@ app.use(sslify({ port: HTTPS }));
 app.use(cors());
 app.use(compress());
 app.use(noTrailingSlash());
+app.use(body({ formLimit: '32kb', jsonLimit: '32kb', multipart: true, formidable: { maxFileSize: '16mb' } }));
+
 app.use(json({ pretty: true, spaces: 4 }));
-app.use(body({ formLimit: '1mb', jsonLimit: '1mb', multipart: true }));
 
 app.use(async (ctx, next) => {
     try {
+        ctx.set({ 'x-api-version': version });
         await next();
     }
     catch (error) {
@@ -50,7 +53,10 @@ app.use(async (ctx, next) => {
 
 router.all(`/api/:service/:action`, async ctx => {
     const { service, action } = ctx.params;
-    const args = { ...ctx.request.query, ...ctx.request.body };
+    const _ip = ctx.ip;
+    const _file = ctx.request.files ? ctx.request.files.file : null;
+
+    const args = { ...ctx.request.query, ...ctx.request.body, _ip, _file };
     ctx.body = await API[service][action](args);
 });
 
@@ -77,4 +83,3 @@ httpsServer.on('error', console.error);
 
 process.on('uncaughtException', console.error);
 process.on('unhandledRejection', console.error);
-process.on('SIGINT', process.exit);
