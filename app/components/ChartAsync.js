@@ -1,6 +1,6 @@
 import React from 'react';
 
-const recharts = import(/* webpackChunkName: "recharts" */'./chartBundle.js');
+const recharts = import(/* webpackChunkName: "recharts-async", webpackPreload: true */ './chartBundle.js');
 
 export default class Chart extends React.PureComponent {
     state = {

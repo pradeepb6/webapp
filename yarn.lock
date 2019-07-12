@@ -4213,10 +4213,10 @@ html-minifier@^4.0.0:
     relateurl "^0.2.7"
     uglify-js "^3.5.1"
 
-html5-webpack-plugin@^1.0.23:
-  version "1.0.23"
-  resolved "https://registry.yarnpkg.com/html5-webpack-plugin/-/html5-webpack-plugin-1.0.23.tgz#583122c6a997a0e8512fdc75a598e0ba716c9b4d"
-  integrity sha512-g6EbzjZe/Ht2SyMxDnVnUwJJvK5xWbaLX5Hhq9dJSp2TM6gG4E/lmKvXioSU9ONshdd6XebETfJH3DFbfLOD9w==
+html5-webpack-plugin@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/html5-webpack-plugin/-/html5-webpack-plugin-1.2.0.tgz#11bf5c3d7ff4fefe9154a7ef79fa7cb93de696c8"
+  integrity sha512-v15d/5EtL3arGMrAmwky+aWDTVg9MTnypNIzsQtszsOTJmhiiAchGBUWWjEqU+G/s/VSXywPVsLQHqYgtHdDTQ==
   dependencies:
     html-minifier "^4.0.0"
     jimp "^0.6.4"
