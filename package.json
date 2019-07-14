@@ -46,7 +46,7 @@
         "logj": "^1.0.0",
         "nodemon": "^1.19.1",
         "pg": "^7.10.0",
-        "sequelize": "^5.10.0",
+        "sequelize": "^5.10.1",
         "yargs": "^13.2.4"
     },
     "devDependencies": {
@@ -88,7 +88,7 @@
         "url-loader": "^2.0.1",
         "webpack": "^4.35.3",
         "webpack-bundle-analyzer": "^3.3.2",
-        "webpack-cli": "^3.3.5",
+        "webpack-cli": "^3.3.6",
         "webpack-dev-server": "^3.7.2",
         "webpack-notifier": "^1.8.0"
     }
