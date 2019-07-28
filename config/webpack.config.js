@@ -4,6 +4,7 @@ import path from 'path';
 import webpack from 'webpack';
 import { CleanWebpackPlugin as CleanPlugin } from 'clean-webpack-plugin';
 import Html5Plugin from 'html5-webpack-plugin';
+import OpenBrowserPlugin from 'open-browser-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
@@ -126,6 +127,7 @@ const config = {
             minify: process.env.NODE_ENV === 'production',
             manifest: true,
         }),
+        new OpenBrowserPlugin(),
     ],
 };
 

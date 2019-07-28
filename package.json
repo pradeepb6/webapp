@@ -80,6 +80,7 @@
         "open-browser-webpack-plugin": "^0.0.5",
         "preact": "10.0.0-rc.0",
         "raw-loader": "^3.1.0",
+        "react": "^16.8.6",
         "react-jss": "10.0.0-alpha.23",
         "react-router-dom": "^5.0.1",
         "recharts": "^1.6.2",
