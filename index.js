@@ -1,4 +1,5 @@
 import { version } from './package.json';
+import stream from 'stream';
 import path from 'path';
 import fs from 'fs';
 import http1 from 'http';
@@ -9,7 +10,6 @@ import cors from 'kcors';
 import compress from 'koa-compress';
 import noTrailingSlash from 'koa-no-trailing-slash';
 import body from 'koa-body';
-import json from 'koa-json';
 import send from 'koa-send';
 import Router from 'koa-router';
 
@@ -30,8 +30,6 @@ app.use(compress());
 app.use(noTrailingSlash());
 app.use(body({ formLimit: '32kb', jsonLimit: '32kb', multipart: true, formidable: { maxFileSize: '16mb' } }));
 
-app.use(json({ pretty: true, spaces: 4 }));
-
 app.use(async (ctx, next) => {
     try {
         ctx.set({ 'x-api-version': version });
@@ -48,6 +46,10 @@ app.use(async (ctx, next) => {
             ctx.status = 400;
             ctx.body = error.message || error;
         }
+    }
+    finally {
+        const isJSON = !Buffer.isBuffer(ctx.body) && !(ctx.body instanceof stream.Readable);
+        ctx.body = isJSON ? JSON.stringify(ctx.body, null, 4) : ctx.body;
     }
 });
 
@@ -75,10 +77,7 @@ const key = fs.readFileSync(SSL_KEY);
 const httpServer = http1.createServer(app.callback()).listen(HTTP, error => error ? console.error(error) : console.info(`http serving on port ${HTTP}`));
 const httpsServer = http2.createSecureServer({ cert, ca, key, allowHTTP1: true }, app.callback()).listen(HTTPS, error => error ? console.error(error) : console.info(`https serving on port ${HTTPS}`));
 
-httpServer.setTimeout(60 * 1000); //1min timeout
 httpServer.on('error', console.error);
-
-httpsServer.setTimeout(60 * 1000); //1min timeout
 httpsServer.on('error', console.error);
 
 process.on('uncaughtException', console.error);
