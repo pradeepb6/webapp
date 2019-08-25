@@ -1,10 +1,10 @@
 {
-    "name": "webapp-kit",
+    "name": "webapp",
     "version": "0.1.0",
     "description": "Web Application Starter Kit",
     "license": "MIT",
     "author": "Damiano Barbati <damiano.barbati@gmail.com> (http://github.com/damianobarbati)",
-    "repository": "https://github.com/damianobarbati/webapp-kit",
+    "repository": "https://github.com/damianobarbati/webapp",
     "main": "index.js",
     "scripts": {
         "codebase:size": "find -E . -regex '.*\\.(html|js|css)$' -not -path './node_modules/**' -not -path './dist/**' | xargs wc -l",
@@ -17,12 +17,12 @@
         "build:dev": "ENVK=.env.development npx -n '-r esm' -n '-r envk' webpack --config ./webpack.config.js --progress",
         "build:dev:hot": "ENVK=.env.development npx -n '-r esm' -n '-r envk' webpack-dev-server --config ./webpack.config.js --progress",
         "build:prod": "ENVK=.env.production npx -n '-r esm' -n '-r envk' webpack --config ./webpack.config.js --progress",
-        "docker:build": "docker build --no-cache --tag $npm_package_name --build-arg NODE_ENV=production --file ./config/Dockerfile ./",
-        "docker:run": "docker stop $npm_package_name; docker container prune -f; docker run --name $npm_package_name --tty --interactive --publish 8080:8080 --publish 8443:8443 --restart unless-stopped --detach $npm_package_name:latest",
-        "docker:bash": "docker exec --tty --interactive $npm_package_name /bin/bash",
-        "docker:dry:run": "yarn docker:build && yarn docker:run && yarn docker:bash",
-        "docker:push": "docker push $npm_package_name:latest",
-        "docker:deploy": "ssh root@server \"docker rm -f $npm_package_name && docker pull $npm_package_name; docker run --name $npm_package_name --tty --interactive --publish 8080:8080 --publish 8443:8443 --detach $npm_package_name:latest\""
+        "docker:build": "docker build --rm --force-rm --squash --no-cache --tag $npm_package_name --tag $npm_package_name:$npm_package_version --build-arg NODE_ENV=production --file ./Dockerfile .",
+        "docker:run": "docker rm -f $npm_package_name; docker run --name $npm_package_name --detach --restart unless-stopped -p 80:8080 -p 443:8443 --env NODE_ENV=production $npm_package_name",
+        "docker:bash": "docker exec -ti $npm_package_name bash",
+        "docker:test": "yarn docker:build && yarn docker:run && yarn docker:bash",
+        "push": "rsync -avP . --exclude=node_modules --exclude=.git root@?:?",
+        "deploy": "npm version patch && yarn push && ssh root@? 'cd $npm_package_name && yarn docker:build && yarn docker:run'"
     },
     "browserslist": [
         "chrome 70",
