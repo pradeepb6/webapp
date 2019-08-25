@@ -18,11 +18,11 @@
         "build:dev:hot": "ENVK=.env.development npx -n '-r esm' -n '-r envk' webpack-dev-server --config ./webpack.config.js --progress",
         "build:prod": "ENVK=.env.production npx -n '-r esm' -n '-r envk' webpack --config ./webpack.config.js --progress",
         "docker:build": "docker build --rm --force-rm --squash --no-cache --tag $npm_package_name --tag $npm_package_name:$npm_package_version --build-arg NODE_ENV=production --file ./Dockerfile .",
-        "docker:run": "docker rm -f $npm_package_name; docker run --name $npm_package_name --detach --restart unless-stopped -p 80:8080 -p 443:8443 --env NODE_ENV=production $npm_package_name",
+        "docker:run": "docker rm -f $npm_package_name; docker run --name $npm_package_name --detach --restart unless-stopped --publish 80:8080 --publish 443:8443 --add-host host.docker.internal:172.17.0.1 $npm_package_name",
         "docker:bash": "docker exec -ti $npm_package_name bash",
         "docker:test": "yarn docker:build && yarn docker:run && yarn docker:bash",
-        "push": "rsync -avP . --exclude=node_modules --exclude=.git root@?:?",
-        "deploy": "npm version patch && yarn push && ssh root@? 'cd $npm_package_name && yarn docker:build && yarn docker:run'"
+        "rsync": "rsync -avP . --exclude node_modules --exclude .git --exclude ./dist root@$npm_package_name:$npm_package_name",
+        "deploy": "npm version patch && yarn rsync && ssh root@$npm_package_name \"cd $npm_package_name; yarn docker:build && yarn docker:run\""
     },
     "browserslist": [
         "chrome 70",
