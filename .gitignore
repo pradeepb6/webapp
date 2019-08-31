@@ -1,7 +1,6 @@
 dist/
 node_modules/
 logs/
-coverage/
-docs/
+.cache/
 .DS_Store
 .Spotlight-*

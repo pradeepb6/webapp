@@ -12,14 +12,16 @@
         "serve": "if [ $NODE_ENV == \"development\" ]; then yarn serve:dev; elif [ $NODE_ENV == \"staging\" ]; then yarn serve:stg; elif [ $NODE_ENV == \"production\" ]; then yarn serve:prod; fi",
         "serve:dev": "ENVK=.env.development yarn nodemon --harmony -r envk -r esm index.js",
         "serve:prod": "ENVK=.env.production node --harmony -r envk -r esm index.js",
+        "buildp:dev": "parcel app/index.html --no-cache --no-autoinstall --open --https --cert ssl/cert.pem --key ssl/key.pem",
+        "buildp:prod": "parcel build app/index.html --no-cache --no-autoinstall",
         "build": "if [ $NODE_ENV == \"development\" ]; then yarn build:dev; elif [ $NODE_ENV == \"staging\" ]; then yarn build:stg; elif [ $NODE_ENV == \"production\" ]; then yarn build:prod; fi",
-        "build:dev": "ENVK=.env.development npx -n '-r esm' -n '-r envk' webpack --config ./webpack.config.js --progress --watch",
-        "build:prod": "ENVK=.env.production npx -n '-r esm' -n '-r envk' webpack --config ./webpack.config.js --progress",
-        "docker:build": "docker build --rm --force-rm --squash --no-cache --tag $npm_package_name --tag $npm_package_name:$npm_package_version --build-arg NODE_ENV=production --file ./Dockerfile .",
+        "build:dev": "ENVK=.env.development npx -n '-r esm' -n '-r envk' webpack --config webpack.config.js --progress --watch",
+        "build:prod": "ENVK=.env.production npx -n '-r esm' -n '-r envk' webpack --config webpack.config.js --progress",
+        "docker:build": "docker build --rm --force-rm --squash --no-cache --tag $npm_package_name --tag $npm_package_name:$npm_package_version --build-arg NODE_ENV=production --file Dockerfile .",
         "docker:run": "docker rm -f $npm_package_name; docker run --rm --name $npm_package_name --detach --restart unless-stopped --publish 80:80 --publish 443:443 --add-host host.docker.internal:172.17.0.1 $npm_package_name",
         "docker:bash": "docker exec --tty --interactive $npm_package_name bash",
         "docker:test": "yarn docker:build && yarn docker:run && yarn docker:bash",
-        "rsync": "rsync -avP --exclude node_modules --exclude .git --exclude ./dist . root@$npm_package_name:$npm_package_name",
+        "rsync": "rsync -avP --exclude .git --exclude-from .gitignore . root@$npm_package_name:$npm_package_name",
         "deploy": "npm version patch && git push --all && yarn rsync && ssh root@$npm_package_name \"cd $npm_package_name; yarn docker:build && yarn docker:run\""
     },
     "browserslist": [
@@ -73,6 +75,8 @@
         "nodemon": "^1.19.1",
         "open-browser-webpack-plugin": "^0.0.5",
         "parcel": "^1.12.3",
+        "parcel-plugin-bundle-visualiser": "^1.2.0",
+        "parcel-plugin-nuke-dist": "^1.0.0",
         "preact": "10.0.0-rc.1",
         "raw-loader": "^3.1.0",
         "react": "^16.9.0",
@@ -91,6 +95,10 @@
     "resolutions": {
         "lodash": "^4.17.12",
         "open": "^6.0.0",
-        "serialize-to-js": "^2.0.0" 
+        "serialize-to-js": "^2.0.0"
+    },
+    "alias": {
+        "react": "preact/compat",
+        "react-dom": "preact/compat"
     }
 }
