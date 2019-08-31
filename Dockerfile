@@ -9,14 +9,11 @@ COPY ./ /var/project
 
 WORKDIR /var/project
 
-RUN yarn install --production=false --ignore-engines
-RUN yarn build:prod
-RUN yarn install --production --ignore-engines
+RUN yarn install --production=false
+RUN yarn build
+RUN yarn install --production
 RUN yarn cache clean
 
-RUN printf "$(ip route show default | awk '/default/ {print $3}') host.docker.internal\n" >> /etc/hosts
+EXPOSE 80 443
 
-EXPOSE 8080
-EXPOSE 8443
-
-CMD NODE_ENV=$NODE_ENV yarn serve:prod
+CMD NODE_ENV=$NODE_ENV yarn serve

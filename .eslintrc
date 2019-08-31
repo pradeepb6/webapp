@@ -13,12 +13,10 @@
         "es6": true,
         "browser": true,
         "serviceworker": true,
-        "node": true,
-        "jest": true
+        "node": true
     },
     "plugins": [
-        "react",
-        "jest"
+        "react"
     ],
     "settings": {
         "react": {
@@ -27,8 +25,7 @@
     },
     "extends": [
         "eslint:recommended",
-        "plugin:react/recommended",
-        "plugin:jest/recommended"
+        "plugin:react/recommended"
     ],
     "rules": {
         "no-console": "off"

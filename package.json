@@ -9,27 +9,25 @@
     "scripts": {
         "codebase:size": "find -E . -regex '.*\\.(html|js|css)$' -not -path './node_modules/**' -not -path './dist/**' | xargs wc -l",
         "jslint": "eslint --ignore-path .gitignore '**/*.js'",
-        "test": "jest --no-cache --coverage --config .jestrc",
-        "test:watch": "yarn test --watch",
         "serve": "if [ $NODE_ENV == \"development\" ]; then yarn serve:dev; elif [ $NODE_ENV == \"staging\" ]; then yarn serve:stg; elif [ $NODE_ENV == \"production\" ]; then yarn serve:prod; fi",
-        "serve:dev": "ENVK=.env.development yarn nodemon --harmony -r esm -r envk index.js",
-        "serve:prod": "NODE_ENV=production node --harmony -r esm -r envk index.js",
-        "build:dev": "ENVK=.env.development npx -n '-r esm' -n '-r envk' webpack --config ./webpack.config.js --progress",
-        "build:dev:hot": "ENVK=.env.development npx -n '-r esm' -n '-r envk' webpack-dev-server --config ./webpack.config.js --progress",
+        "serve:dev": "ENVK=.env.development yarn nodemon --harmony -r envk -r esm index.js",
+        "serve:prod": "ENVK=.env.production node --harmony -r envk -r esm index.js",
+        "build": "if [ $NODE_ENV == \"development\" ]; then yarn build:dev; elif [ $NODE_ENV == \"staging\" ]; then yarn build:stg; elif [ $NODE_ENV == \"production\" ]; then yarn build:prod; fi",
+        "build:dev": "ENVK=.env.development npx -n '-r esm' -n '-r envk' webpack --config ./webpack.config.js --progress --watch",
         "build:prod": "ENVK=.env.production npx -n '-r esm' -n '-r envk' webpack --config ./webpack.config.js --progress",
         "docker:build": "docker build --rm --force-rm --squash --no-cache --tag $npm_package_name --tag $npm_package_name:$npm_package_version --build-arg NODE_ENV=production --file ./Dockerfile .",
-        "docker:run": "docker rm -f $npm_package_name; docker run --name $npm_package_name --detach --restart unless-stopped --publish 80:8080 --publish 443:8443 --add-host host.docker.internal:172.17.0.1 $npm_package_name",
-        "docker:bash": "docker exec -ti $npm_package_name bash",
+        "docker:run": "docker rm -f $npm_package_name; docker run --rm --name $npm_package_name --detach --restart unless-stopped --publish 80:80 --publish 443:443 --add-host host.docker.internal:172.17.0.1 $npm_package_name",
+        "docker:bash": "docker exec --tty --interactive $npm_package_name bash",
         "docker:test": "yarn docker:build && yarn docker:run && yarn docker:bash",
-        "rsync": "rsync -avP . --exclude node_modules --exclude .git --exclude ./dist root@$npm_package_name:$npm_package_name",
-        "deploy": "npm version patch && yarn rsync && ssh root@$npm_package_name \"cd $npm_package_name; yarn docker:build && yarn docker:run\""
+        "rsync": "rsync -avP --exclude node_modules --exclude .git --exclude ./dist . root@$npm_package_name:$npm_package_name",
+        "deploy": "npm version patch && git push --all && yarn rsync && ssh root@$npm_package_name \"cd $npm_package_name; yarn docker:build && yarn docker:run\""
     },
     "browserslist": [
         "chrome 70",
         "ios_saf 12"
     ],
     "dependencies": {
-        "envk": "^1.0.6",
+        "envk": "^1.0.7",
         "esm": "3.2.25",
         "kcors": "^2.2.1",
         "koa": "^2.8.1",
@@ -43,9 +41,8 @@
         "koa-useragent": "^2.0.0",
         "lodash-es": "^4.17.15",
         "logj": "^1.0.0",
-        "nodemon": "^1.19.1",
         "pg": "^7.12.1",
-        "sequelize": "^5.16.0",
+        "sequelize": "^5.17.2",
         "yargs": "^14.0.0"
     },
     "devDependencies": {
@@ -59,24 +56,23 @@
         "@babel/preset-react": "^7.0.0",
         "axios": "^0.19.0",
         "babel-eslint": "^10.0.3",
-        "babel-jest": "^24.9.0",
         "babel-loader": "^8.0.6",
         "babel-plugin-lodash": "^3.3.2",
         "classnames": "^2.2.5",
         "clean-webpack-plugin": "^3.0.0",
         "compression-webpack-plugin": "^3.0.0",
         "core-js": "^3.2.1",
-        "eslint": "^6.2.2",
+        "eslint": "^6.3.0",
         "eslint-loader": "^3.0.0",
-        "eslint-plugin-jest": "^22.15.2",
         "eslint-plugin-react": "^7.14.3",
         "file-loader": "^4.2.0",
         "html5-webpack-plugin": "^1.2.0",
         "img-loader": "^3.0.1",
-        "jest": "^24.9.0",
         "jss-reset": "^1.0.3",
         "jwt-decode": "^2.2.0",
+        "nodemon": "^1.19.1",
         "open-browser-webpack-plugin": "^0.0.5",
+        "parcel": "^1.12.3",
         "preact": "10.0.0-rc.1",
         "raw-loader": "^3.1.0",
         "react": "^16.9.0",
@@ -94,6 +90,7 @@
     },
     "resolutions": {
         "lodash": "^4.17.12",
-        "open": "^6.0.0"
+        "open": "^6.0.0",
+        "serialize-to-js": "^2.0.0" 
     }
 }
