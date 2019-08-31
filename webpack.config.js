@@ -14,7 +14,6 @@ const { SSL_CERT, SSL_CA, SSL_KEY, HTML, JS, FAVICON, SPLASH, SPLASH_BACKGROUND 
 
 const config = {
     profile: true,
-    watch: process.env.NODE_ENV === 'development' ? true : false,
     mode: process.env.NODE_ENV === 'development' ? 'development' : 'production',
     entry: {
         index: path.resolve(JS),
