@@ -30,7 +30,7 @@
     ],
     "dependencies": {
         "envk": "^1.0.7",
-        "esm": "3.2.25",
+        "esm": "^3.2.25",
         "kcors": "^2.2.1",
         "koa": "^2.8.1",
         "koa-body": "^4.1.1",
@@ -44,7 +44,7 @@
         "lodash-es": "^4.17.15",
         "logj": "^1.0.0",
         "pg": "^7.12.1",
-        "sequelize": "^5.17.2",
+        "sequelize": "^5.18.0",
         "yargs": "^14.0.0"
     },
     "devDependencies": {
@@ -77,10 +77,10 @@
         "parcel": "^1.12.3",
         "parcel-plugin-bundle-visualiser": "^1.2.0",
         "parcel-plugin-nuke-dist": "^1.0.0",
-        "preact": "10.0.0-rc.1",
+        "preact": "^10.0.0-rc.1",
         "raw-loader": "^3.1.0",
         "react": "^16.9.0",
-        "react-jss": "10.0.0-alpha.23",
+        "react-jss": "^10.0.0-alpha.23",
         "react-router-dom": "^5.0.1",
         "recharts": "^1.7.1",
         "terser-webpack-plugin": "^1.4.1",
@@ -93,7 +93,6 @@
         "webpack-notifier": "^1.8.0"
     },
     "resolutions": {
-        "lodash": "^4.17.12",
         "open": "^6.0.0",
         "serialize-to-js": "^2.0.0"
     },
